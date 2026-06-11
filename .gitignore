@@ -1,0 +1,38 @@
+# ── 密钥 / 环境变量（绝不上传）────────────────
+.env
+backend/.env
+dist/.env
+
+# ── 用户数据 / 运行期产物 ─────────────────────
+uploads/
+ppt_reader.db
+ppt_reader.db-wal
+ppt_reader.db-shm
+
+# ── 打包 / 构建产物 ──────────────────────────
+dist/
+build/
+*.exe
+*.spec.bak
+
+# ── 本地测试用 PPT（体积大、属个人文件）────────
+test0.pptx
+test1.pptx
+*.pptx
+
+# ── Python 缓存 ─────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ── 编辑器 / 系统 ───────────────────────────
+.claude/settings.local.json
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ── Node ────────────────────────────────────
+node_modules/

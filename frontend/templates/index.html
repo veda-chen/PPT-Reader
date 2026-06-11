@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能PPT阅读器</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<header id="header-bar">
+  <div class="header-left">
+    <span class="logo">📊 智能PPT阅读器</span>
+    <span id="header-filename" class="header-filename"></span>
+  </div>
+  <div class="header-center">
+    <button id="btn-bilingual" class="toolbar-btn bilingual-btn" title="双语对照：左侧原文，右侧译文" disabled>📖 双语对照</button>
+    <button id="btn-translate-text" class="toolbar-btn" title="翻译选中文本" disabled>🌐 翻译</button>
+    <button id="btn-summarize-slide" class="toolbar-btn" title="总结当前页" disabled>📝 总结本页</button>
+    <button id="btn-summarize-doc" class="toolbar-btn" title="总结全文" disabled>📄 总结全文</button>
+  </div>
+  <div class="header-right">
+    <button id="btn-upload" class="upload-btn">📤 上传PPT</button>
+    <input type="file" id="file-input" accept=".pptx" hidden>
+  </div>
+</header>
+
+<!-- 主布局 -->
+<div id="main-layout">
+
+  <!-- 左侧缩略图栏 -->
+  <nav id="thumbnail-strip">
+    <div id="thumbnail-list" class="thumbnail-list"></div>
+  </nav>
+
+  <!-- 中间主幻灯片区域 -->
+  <main id="slide-area">
+    <!-- 原文幻灯片 -->
+    <div id="slide-pane-original" class="slide-pane">
+      <div class="pane-label">📄 原文</div>
+      <div id="slide-container" class="slide-container-inner">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-state-icon">📂</div>
+          <p>上传一个 PPT 文件开始阅读</p>
+          <button class="upload-btn-large" id="btn-upload-large">📤 选择 PPT 文件</button>
+        </div>
+      </div>
+    </div>
+    <!-- 译文幻灯片 -->
+    <div id="slide-pane-translated" class="slide-pane hidden">
+      <div class="pane-label">🌐 译文</div>
+      <div id="slide-container-translated" class="slide-container-inner">
+        <div class="empty-state">
+          <div class="empty-state-icon">🔄</div>
+          <p>点击"双语对照"按钮开始翻译</p>
+        </div>
+      </div>
+    </div>
+    <div id="slide-nav-controls">
+      <button id="btn-prev" class="nav-btn" disabled>◀ 上一页</button>
+      <span id="slide-indicator" class="slide-indicator"></span>
+      <button id="btn-next" class="nav-btn" disabled>下一页 ▶</button>
+    </div>
+  </main>
+
+  <!-- 右侧边栏 -->
+  <aside id="right-sidebar">
+    <div id="sidebar-tabs">
+      <button class="sidebar-tab active" data-tab="chat">💬 对话</button>
+      <button class="sidebar-tab" data-tab="notes">📌 笔记</button>
+    </div>
+
+    <!-- 对话面板 -->
+    <div id="tab-chat" class="tab-panel active">
+      <div id="chat-messages" class="chat-messages">
+        <div class="chat-empty">开始与文档对话，提问关于 PPT 内容的任何问题</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea id="chat-input" class="chat-input" placeholder="输入问题..." rows="2"></textarea>
+        <button id="btn-send" class="send-btn">发送</button>
+      </div>
+    </div>
+
+    <!-- 笔记面板 -->
+    <div id="tab-notes" class="tab-panel">
+      <div id="notes-list" class="notes-list">
+        <div class="notes-empty">暂无笔记。选中幻灯片文字创建高亮笔记</div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- 底部状态栏 -->
+<footer id="status-bar">
+  <span id="status-text">就绪</span>
+</footer>
+
+<!-- 高亮颜色选择器（浮动） -->
+<div id="highlight-picker" class="highlight-picker hidden">
+  <button class="color-btn" style="background:#FFEB3B" data-color="#FFEB3B"></button>
+  <button class="color-btn" style="background:#4CAF50" data-color="#4CAF50"></button>
+  <button class="color-btn" style="background:#2196F3" data-color="#2196F3"></button>
+  <button class="color-btn" style="background:#FF9800" data-color="#FF9800"></button>
+  <button class="color-btn" style="background:#E91E63" data-color="#E91E63"></button>
+  <button class="highlight-action" data-action="note">💬 添加笔记</button>
+  <button class="highlight-action" data-action="delete">🗑 删除</button>
+</div>
+
+<!-- 图片识图模态框 -->
+<div id="vision-modal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <span>🖼 图片识别</span>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <img id="vision-image" src="" alt="识图目标">
+      <div id="vision-result" class="vision-result">
+        <div class="spinner"></div>
+        <span>正在识别...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 翻译/总结结果弹出框 -->
+<div id="result-popup" class="result-popup hidden">
+  <div class="result-popup-header">
+    <span id="result-popup-title">结果</span>
+    <button class="result-popup-close">&times;</button>
+  </div>
+  <div class="result-popup-body" id="result-popup-body"></div>
+</div>
+
+<!-- Notification toast -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- JavaScript 模块 -->
+<script src="/static/js/api.js"></script>
+<script src="/static/js/slide-renderer.js"></script>
+<script src="/static/js/navigation.js"></script>
+<script src="/static/js/highlight.js"></script>
+<script src="/static/js/bilingual.js"></script>
+<script src="/static/js/chat-panel.js"></script>
+<script src="/static/js/llm-panel.js"></script>
+<script src="/static/js/image-viewer.js"></script>
+<script src="/static/js/app.js"></script>
+
+</body>
+</html>

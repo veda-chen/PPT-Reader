@@ -1,0 +1,19 @@
+智能PPT阅读器 — 使用说明
+================================
+
+【免安装版（exe）】
+1) 双击「智能PPT阅读器.exe」启动；首次运行会在同目录自动生成 .env 配置文件并打开记事本。
+2) 在 .env 里把 QWEN_API_KEY 改成你自己的 API Key，保存。
+   （DashScope/千问 申请地址：https://dashscope.console.aliyun.com）
+3) 重新双击 exe，浏览器会自动打开 http://127.0.0.1:8800 ，上传 .pptx 即可使用。
+4) uploads 文件夹、ppt_reader.db 都保存在 exe 同目录，可随程序一起带走。
+
+【源码版】
+1) 安装 Python 3.10+，双击「启动.bat」即可（首次会自动装依赖、生成 .env）。
+
+【环境要求】
+- 高保真预览：需本机安装 Microsoft PowerPoint（Office 2016/365）。没有也能用，会自动降级为文字渲染。
+- 点图片识图：需另外安装 Node.js（https://nodejs.org/）。未安装时该功能会提示不可用，不影响其他功能。
+
+【停止程序】
+- 关闭那个黑色控制台窗口即可停止。

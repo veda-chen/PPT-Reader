@@ -101,16 +101,6 @@ QWEN_MODEL=qwen-max
 | 数据存储 | SQLite |
 | 打包 | PyInstaller（单文件 exe） |
 
-**核心思路——怎么做到「和原 PPT 一模一样」**：不靠解析重排，而是**让 PowerPoint 自己渲染自己**——
-
-```
-PowerPoint 导出 PDF ──► PyMuPDF 渲染成高清 PNG（作背景）
-                    └─► PyMuPDF 提取每个字的精确坐标（作透明文字层）
-背景图 + 透明文字层叠加 = 像素级保真 ＋ 文字可选中/可翻译
-```
-
-两者坐标同源于同一个 PDF，天然对齐；PowerPoint 不可用时自动降级为 python-pptx 文字渲染。
-
 ---
 
 ## 📂 目录结构
